@@ -1,8 +1,9 @@
 $(document).ready(function(){
     console.log('Ready')
+    var today = new Date();
     $.ajax({
         type: "GET",
-        url: "http://192.168.8.176:8989/budget/2019/10",
+        url: "http://192.168.8.176:8989/budget/" + today.getFullYear()+ "/" + today.getMonth(),
         dataType: "json",
         success: function (data) {
             var totalAllocated = 0;
@@ -56,17 +57,10 @@ function getAllocated(transactions){
     var total = 0;
     transactions.forEach((transaction,index) => {
         var today = new Date();
-        var start = new Date(today.getFullYear(),10,1);
+        var start = new Date(today.getFullYear(),today.getMonth(),1);
         var end = new Date(start);
         end.setMonth(end.getMonth() + 1);
         var transactionDate = new Date(transaction.transaction_date);
-        console.log('End Date: ' + end);
-        console.log('Transaction Date: ' + transactionDate); 
-        console.log('Start: ' + start.getTime());
-        console.log('End: ' + end.getTime());
-        console.log('TransactionDate: ' + transactionDate.getTime());
-        console.log(transactionDate.getTime()  >= start.getTime());
-        console.log(transactionDate.getTime() <= end.getTime());
         if(transactionDate.getTime()  >= start.getTime() && transactionDate.getTime() <= end.getTime()){
             console.log(transaction.type);
             if(transaction.type === 'credit'){
@@ -88,7 +82,7 @@ function getSpent(transactions){
     var total = 0;
     transactions.forEach((transaction,index) => {
         var today = new Date();
-        var start = new Date(today.getFullYear(),10,1);
+        var start = new Date(today.getFullYear(),today.getMonth(),1);
         var end = new Date(start);
         end.setMonth(end.getMonth() + 1);
         var transactionDate = new Date(transaction.transaction_date);
